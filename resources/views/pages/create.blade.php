@@ -17,3 +17,19 @@
         </div>
     </div>
 @endsection
+
+@section('scripts.footer')
+<script>
+    $(document).ready(function() {
+        // Actions after submitting the form
+        $('form#createScrape').on('submit', function(e){
+            
+            // Prevent the form to be submitted twice
+            $('form#createScrape button').attr('disabled', 'disabled');
+
+            // Show loader-text
+            $('#loader').fadeIn('slow');
+        });
+    });
+</script>
+@endsection

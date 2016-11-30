@@ -17,6 +17,7 @@
 
 Route::get('/', 'ScraperController@create');
 Route::get('/history', 'ScraperController@index');
-Route::get('/history/{keyword}', 'ScraperController@show');
+Route::get('/history/{id}', 'ScraperController@show');
 
 Route::post('/create', 'ScraperController@store');
+Route::post('/history', 'ScraperController@redirectKeyword');

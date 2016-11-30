@@ -1,4 +1,4 @@
-<form method="POST" action="/create">
+<form method="POST" id="createScrape" action="/create">
 	{{ csrf_field() }}
 
 	<div class="form-group {{ $errors->has('keyword') ? 'has-error' : '' }}">
@@ -18,4 +18,6 @@
 			</button>
 		</div>
 	</div>
+
+	<div class="col-md-12" id="loader" style="display:none">Right now we are downloading the top 100 search results from Google. One moment please...</div>
 </form>

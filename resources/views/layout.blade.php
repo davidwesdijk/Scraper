@@ -3,9 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>{{ config('app.name') }}</title>
-		<link href="/css/libs.css" rel="stylesheet">
 		<link href="/css/app.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css" rel="stylesheet">
+		@yield('scripts.header')
 	</head>
 	<body>
 
@@ -18,18 +18,22 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">{{ config('app.name') }}</a>
+				<a class="navbar-brand" href="#"><strong>{{ config('app.name') }}</strong></a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="/">New scrape</a></li>
-					<li><a href="/history">History</a></li>
+					<li>
+						<a href="/">New scrape</a>
+					</li>
+					<li>
+						<a href="/history">History</a>
+					</li>
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
 	</nav>
 
-	<div class="container">
+	<div class="content container">
 		@yield('content')
 	</div>
 

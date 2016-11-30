@@ -7692,4 +7692,36 @@ body {
   padding-top: 70px;
 }
 
+.content.container {
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #d3e0e9;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+}
+
+.content.container .jumbotron {
+  margin-top: 15px;
+}
+
+button.btn.dropdown-toggle.btn-default {
+  height: 46px;
+}
+
+.btn-default:hover {
+  background-color: #f7f7f7 !important;
+}
+
+.pagination {
+  margin-bottom: 0px;
+  margin-top: 10px;
+}
+
+div#loader {
+  text-align: center;
+  color: #79bce1;
+  padding-top: 10px;
+  font-size: 21px;
+}
+
 /*# sourceMappingURL=app.css.map */
