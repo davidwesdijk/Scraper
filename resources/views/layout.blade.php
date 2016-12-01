@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<title>{{ config('app.name') }}</title>
+		<link href="/css/libs.css" rel="stylesheet">
 		<link href="/css/app.css" rel="stylesheet">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css" rel="stylesheet">
 		@yield('scripts.header')
 	</head>
 	<body>
@@ -18,7 +18,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"><strong>{{ config('app.name') }}</strong></a>
+				<a class="navbar-brand" href="/"><strong>{{ config('app.name') }}</strong></a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
@@ -39,7 +39,7 @@
 
 	<script src="/js/app.js"></script>
 	<script src="/js/libs.js"></script>
-
+	@include('flash')
 	@yield('scripts.footer')
 	</body>
 </html>

@@ -19,7 +19,7 @@ class CreateKeywordResultsTable extends Migration
             $table->foreign('keyword_id')->references('id')->on('keywords')->onDelete('cascade');
             $table->string('title');
             $table->string('url');
-            $table->string('description');
+            $table->string('description', 1000);
             $table->timestamps();
         });
     }

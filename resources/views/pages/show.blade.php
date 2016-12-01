@@ -2,7 +2,7 @@
 
 @section('content')
 	<div class="jumbotron">
-        <h1>Keyword: {!! $keyword->keyword !!}</h1>
+        <h1>Keyword: {{ $keyword->keyword }}</h1>
 
         <p>When selecting a keyword from the dropdown a grid will be presented which will list all the 100 urls that were scraped from google.</p>
     </div>
@@ -19,18 +19,18 @@
 				<tbody>
 					@foreach ($results as $result)
 						<tr>
-							<td class="id">{!! $loop->iteration + ($results->currentPage() * 10 - 10) !!}</td>
-							<td class="title">{!! $result->title !!}</td>
+							<td class="id">{{ $loop->iteration + ($results->currentPage() * 10 - 10) }}</td>
+							<td class="title">{{ $result->title }}</td>
 							<td class="url">
 								<a href="{!! $result->url !!}" target="_blank" title="{!! $result->url !!}">
 									@if (strlen($result->url) >= 40)
-										{!! substr($result->url, 0, 40) !!}...
+										{{ substr($result->url, 0, 40) }}...
 									@else
-										{!! $result->url !!}
+										{{ $result->url }}
 									@endif
 								</a>
 							</td>
-							<td class="description">{!! $result->description !!}</td>
+							<td class="description">{{ $result->description }}</td>
 						</tr>
 					@endforeach
 				</tbody>

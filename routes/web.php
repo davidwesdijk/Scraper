@@ -11,10 +11,6 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/', 'ScraperController@create');
 Route::get('/history', 'ScraperController@index');
 Route::get('/history/{id}', 'ScraperController@show');

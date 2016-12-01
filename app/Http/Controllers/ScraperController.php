@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Keyword;
 use App\Result;
+use App\Http\Utilities\ApiRequest;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ScraperController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the page with the select for all keywords
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,7 +23,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the page with the form for a new scrape
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,7 +33,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created Keyword and fetch the Google results
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -52,16 +53,24 @@ class ScraperController extends Controller
             $keyword->results()->create($result);
         }
 
+        flash()->success('Success!', 'The results has successfully been retrieved from Google');
+
         return redirect('/history/' . $keyword->id);
     }
 
+    /**
+     * Redirect the user to the result page (show) after the creation of the instance\
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return redirect
+     */
     public function redirectKeyword(Request $request)
     {
         return redirect('/history/' . $request->keyword_id);
     }
 
     /**
-     * Display the specified resource.
+     * Display the keyword instance with results by keyword id
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -78,53 +87,30 @@ class ScraperController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Get a max. of 100 results by the keyword and return them in an array
+     * 
+     * @param  string $keyword 
+     * @return array          
      */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function getResults($keyword)
     {
         $finalResults = [];
 
+        // Google CSE limits the max. results by 10, so run 10 times
         for ($i = 1; $i < 100; $i += 10) {
-            $results = $this->curlData($keyword, $i);
+            // Curl the results by 10 and store them in an array
+            $results = ApiRequest::fetchGoogle($keyword, $i);
 
+            // If Google has more than 100 results, limit them at 100
             if ($results->searchInformation->totalResults <= 100) {
                 $totalResults = $results->searchInformation->totalResults;
             } else {
                 $totalResults = 100;
             }
 
+            // loop through the array and fill the final array with wanted values
             foreach ($results->items as $item) {
+                // Skip the last entries if it exceeds the totalResults, just in case :-)
                 if (count($finalResults) >= $totalResults) 
                     continue;
 
@@ -137,26 +123,5 @@ class ScraperController extends Controller
         }
 
         return $finalResults;
-    }
-
-    public function curlData($keyword, $start = 1)
-    {
-        $apiKey = 'AIzaSyBsuANKyHDVKOlOwEoEeHyCasSbjj0saag';
-        $cxKey = '015615786150392790734%3Adsww8gy6ify';
-        $fields = urlencode('items(link,snippet,title),searchInformation/totalResults');
-
-        $keyword = urlencode(str_replace(' ', '+', $keyword));
-
-        $url = 'https://www.googleapis.com/customsearch/v1?q='. $keyword .'&cx='. $cxKey .'&fields='. $fields .'&start='. $start .'&key='. $apiKey;
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        $data = curl_exec($ch);
-        curl_close($ch);
-
-        return json_decode($data);
     }
 }
